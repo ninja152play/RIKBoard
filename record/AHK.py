@@ -125,7 +125,7 @@ class AHKRecord:
                     self.mouse_move_x = 0
                 self.mouse_move_x += x - self.center_x
                 self.mouse_rotations_x = 'L'
-            print(x, y)
+
             if y > self.center_y:
                 if self.mouse_rotations_y == 'U':
                     self._add_event(f'MouseMove, 0, {int(self.mouse_move_y) // 3}, 50, R')

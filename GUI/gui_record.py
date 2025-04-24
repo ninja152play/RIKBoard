@@ -172,15 +172,23 @@ class GuiAHK:
     def on_start(self):
         self.key_str = self.key.get().lower()
         self.entry_name_str = self.entry_name.get()
-        x = int(self.x.get())
-        y = int(self.y.get())
+        x = self.x.get()
+        y = self.y.get()
+        if x == "":
+            x = 1920
+        else:
+            x = int(x)
+        if y == "":
+            y = 1080
+        else:
+            y = int(y)
         if self.key_str == "":
             self.key_str = "f9"
         if self.entry_name_str != "":
             self.root.destroy()
             restart = AHKRecord(self.key_str, self.entry_name_str, x, y).ahk_listener()
             if restart:
-                gui_keyboard()
+                gui_ahk()
         else:
             self.name.config(text="Error: write the name!")
 
