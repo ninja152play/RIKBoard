@@ -14,7 +14,7 @@ Player воспроизводит 1 и 2 вариант записи (в оди�
 Установка
 =========
 
-1. ```git clone https://github.com/ninja152play/RuBox.git```
+1. ```git clone https://github.com/ninja152play/RIKBoard.git```
 2. ```cd RICBoard```
 3. ```python -m venv venv```
 4. Для Linux ```source venv/bin/activate``` Для Windows ```venv\Scripts\activate.bat```
