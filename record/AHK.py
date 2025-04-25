@@ -26,7 +26,6 @@ class AHKRecord:
         self.active_mouse_buttons = set()
 
         # Центр экрана
-
         self.center_x = x / 2
         self.center_y = y / 2
 

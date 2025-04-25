@@ -16,7 +16,12 @@ class GuiPlayer:
         ttk.Button(self.root, text="Load file", command=self.on_load).pack(pady=5)
         self.file_label = tk.Label(self.root, text="")
         self.file_label.pack(pady=5)
-        tk.Label(self.root, text="Write file name").pack(pady=5)
+
+        ttk.Label(self.root, text="Select key to record start/stop (f1-f12)\n Key standard: 'f9'").pack(pady=15)
+        self.key = ttk.Entry(self.root, width=20)
+        self.key.pack(pady=10)
+
+        ttk.Label(self.root, text="Write file name").pack(pady=5)
         self.file_name = ttk.Entry(self.root, width=40)
         self.file_name.pack(pady=5)
 
@@ -36,14 +41,20 @@ class GuiPlayer:
         self.file_label.config(text=file_names)
 
     def on_start(self):
+        self.key_str = self.key.get().lower()
         self.file_name_str = self.file_name.get()
+        if self.key_str == "":
+            self.key_str = "f9"
         self.root.destroy()
-        play = KeyboardMousePlayer(self.file_name_str).play()
+        play = KeyboardMousePlayer(self.file_name_str, self.key_str).play()
 
     def on_start_loop(self):
+        self.key_str = self.key.get().lower()
         self.file_name_str = self.file_name.get()
+        if self.key_str == "":
+            self.key_str = "f9"
         self.root.destroy()
-        play = KeyboardMousePlayer(self.file_name_str).play_loop()
+        play = KeyboardMousePlayer(self.file_name_str, self.key_str).play_loop()
 
     def on_back(self):
         self.root.destroy()

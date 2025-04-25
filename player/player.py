@@ -1,3 +1,4 @@
+import threading
 import json
 import time
 import os
@@ -5,12 +6,14 @@ from pynput import keyboard, mouse
 
 
 class KeyboardMousePlayer:
-    def __init__(self, filename):
+    def __init__(self, filename, key_switch):
         self.filename = os.path.join(os.getcwd(), "RecordFiles", f"{filename}.json")
         self.keyboard = keyboard.Controller()
         self.mouse = mouse.Controller()
         self.events = []
         self._load_events()
+        self.is_playing = False
+        self.stop_key = getattr(keyboard.Key, key_switch.lower())
 
     def _load_events(self):
         """Загружает все события из файла в память"""
@@ -80,8 +83,24 @@ class KeyboardMousePlayer:
         except Exception as e:
             print(f"Ошибка при выполнении события: {e}")
 
+    def _stop_listener(self):
+        """Слушатель клавиши для остановки"""
+
+        def on_press(key):
+            if key == self.stop_key:
+                self.is_playing = False
+                print("Воспроизведение остановлено!")
+                return False  # Останавливаем слушатель
+
+        with keyboard.Listener(on_press=on_press) as listener:
+            listener.join()
+
     def play(self, speed=1.0):
         """Воспроизводит запись с заданной скоростью"""
+        self.is_playing = True
+        stop_thread = threading.Thread(target=self._stop_listener, daemon=True)
+        stop_thread.start()
+
         time.sleep(3)
         if not self.events:
             print("Нет событий для воспроизведения.")
@@ -91,36 +110,20 @@ class KeyboardMousePlayer:
         prev_time = start_time
 
         for event in self.events:
-            try:
-                current_time = event['time']
-                delay = (current_time - prev_time) / speed
-                if delay > 0:
-                    time.sleep(delay)
+            if not self.is_playing:
+                break
+            current_time = event['time']
+            delay = (current_time - prev_time) / speed
+            if delay > 0:
+                time.sleep(delay)
 
-                self._execute_event(event)
-                prev_time = current_time
-            except Exception as e:
-                print(f"Ошибка при воспроизведении события: {e}")
+            self._execute_event(event)
+            prev_time = current_time
+
 
     def play_loop(self, speed=1.0):
         """Воспроизводит запись с заданной скоростью"""
         time.sleep(3)
-        while True:
-            if not self.events:
-                print("Нет событий для воспроизведения.")
-                return
-
-            start_time = self.events[0]['time']
-            prev_time = start_time
-
-            for event in self.events:
-                try:
-                    current_time = event['time']
-                    delay = (current_time - prev_time) / speed
-                    if delay > 0:
-                        time.sleep(delay)
-
-                    self._execute_event(event)
-                    prev_time = current_time
-                except Exception as e:
-                    print(f"Ошибка при воспроизведении события: {e}")
+        self.is_playing = True
+        while self.is_playing:
+            self.play(speed)
