@@ -1,3 +1,4 @@
 from GUI.gui_main import gui
 
-gui()
+while True:
+  gui()
