@@ -1,4 +1,5 @@
 from GUI.gui_main import gui
 
-while True:
-  gui()
+work = True
+while work:
+    work = gui()
