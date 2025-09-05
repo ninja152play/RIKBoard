@@ -32,6 +32,7 @@ class Gui:
 
     def on_exit(self):
         self.root.destroy()
+        return False
 
 
 def gui():
