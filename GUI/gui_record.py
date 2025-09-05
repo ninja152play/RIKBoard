@@ -19,7 +19,7 @@ class GuiRecord:
 
         ttk.Button(button_frame, text="Keyboard", command=self.on_keyboard).pack(side=tk.LEFT, padx=5)
         ttk.Button(button_frame, text="Keyboard and Mouse", command=self.on_keyboard_and_mouse).pack(side=tk.LEFT, padx=5)
-        ttk.Button(button_frame, text="AHK", command=self.on_ahk).pack(side=tk.TOP, padx=5)
+        #ttk.Button(button_frame, text="AHK", command=self.on_ahk).pack(side=tk.TOP, padx=5)
         ttk.Button(text="Back", command=self.on_back).pack(side=tk.TOP, padx=5)
 
     def on_keyboard(self):
@@ -32,8 +32,8 @@ class GuiRecord:
         gui_keyboard_mouse()
 
     def on_ahk(self):
-        self.root.destroy()
-        gui_ahk()
+        #self.root.destroy()
+        #gui_ahk()
 
     def on_back(self):
         self.root.destroy()
